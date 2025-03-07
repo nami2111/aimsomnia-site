@@ -1,0 +1,29 @@
+{
+  "canisters": {
+    "aimsomnia-site-backend": {
+      "declarations": {
+        "node_compatibility": true
+      },
+      "main": "src/aimsomnia-site-backend/main.mo",
+      "type": "motoko"
+    },
+    "aimsomnia-site-frontend": {
+      "dependencies": [
+        "aimsomnia-site-backend"
+      ],
+      "source": [
+        "src/aimsomnia-site-frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "aimsomnia-site-frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
