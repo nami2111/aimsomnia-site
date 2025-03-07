@@ -1,0 +1,112 @@
+{
+  "collections": [
+    {
+      "name": "Cyberpunk Dreams",
+      "description": "Neon-lit cityscapes and futuristic vibes",
+      "type": "Digital Art",
+      "year": 2024,
+      "count": 120,
+      "externalUrl": "#",
+      "image": "https://picsum.photos/400/300?random=1"
+    },
+    {
+      "name": "Vintage Memories",
+      "description": "Classic film photography collection",
+      "type": "Photography",
+      "year": 2023,
+      "count": 85,
+      "externalUrl": "#",
+      "image": "https://picsum.photos/400/300?random=2"
+    },
+    {
+      "name": "Abstract Realms",
+      "description": "Exploring the boundaries of imagination",
+      "type": "Painting",
+      "year": 2025,
+      "count": 64,
+      "externalUrl": "#",
+      "image": "https://picsum.photos/400/300?random=3"
+    },
+    {
+      "name": "Nature's Symphony",
+      "description": "Capturing the beauty of the natural world",
+      "type": "Photography",
+      "year": 2024,
+      "count": 92,
+      "externalUrl": "#",
+      "image": "https://picsum.photos/400/300?random=4"
+    },
+    {
+      "name": "Urban Explorations",
+      "description": "The hidden beauty of city architecture",
+      "type": "Photography",
+      "year": 2023,
+      "count": 78,
+      "externalUrl": "#",
+      "image": "https://picsum.photos/400/300?random=5"
+    },
+    {
+      "name": "Digital Expressions",
+      "description": "Modern art in the digital age",
+      "type": "Digital Art",
+      "year": 2025,
+      "count": 105,
+      "externalUrl": "#",
+      "image": "https://picsum.photos/400/300?random=6"
+    },
+    {
+      "name": "Minimalist Moments",
+      "description": "Less is more in this curated collection",
+      "type": "Photography",
+      "year": 2024,
+      "count": 56,
+      "externalUrl": "#",
+      "image": "https://picsum.photos/400/300?random=7"
+    },
+    {
+      "name": "Surreal Visions",
+      "description": "Dreamlike landscapes and impossible scenes",
+      "type": "Painting",
+      "year": 2023,
+      "count": 72,
+      "externalUrl": "#",
+      "image": "https://picsum.photos/400/300?random=8"
+    },
+    {
+      "name": "Street Stories",
+      "description": "Capturing life in the urban jungle",
+      "type": "Photography",
+      "year": 2025,
+      "count": 88,
+      "externalUrl": "#",
+      "image": "https://picsum.photos/400/300?random=9"
+    },
+    {
+      "name": "Futuristic Forms",
+      "description": "Exploring shapes and structures of tomorrow",
+      "type": "3D Art",
+      "year": 2024,
+      "count": 95,
+      "externalUrl": "#",
+      "image": "https://picsum.photos/400/300?random=10"
+    },
+    {
+      "name": "Timeless Classics",
+      "description": "Masterpieces from the golden age of art",
+      "type": "Painting",
+      "year": 2023,
+      "count": 60,
+      "externalUrl": "#",
+      "image": "https://picsum.photos/400/300?random=11"
+    },
+    {
+      "name": "Experimental Expressions",
+      "description": "Pushing the boundaries of artistic mediums",
+      "type": "Mixed Media",
+      "year": 2025,
+      "count": 82,
+      "externalUrl": "#",
+      "image": "https://picsum.photos/400/300?random=12"
+    }
+  ]
+}

@@ -1,26 +1,437 @@
 <script>
   import "../index.scss";
-  import { backend } from "$lib/canisters";
+  import { onMount } from "svelte";
+  import collections from "../lib/collections.json";
+  import EmptyStateIllustration from "../lib/Logo.svelte";
 
-  let greeting = "";
+  let isLoading = true;
+  let error = null;
+  let collectionsData = [];
+  let filteredCollections = [];
+  let searchQuery = "";
+  let currentPage = 1;
+  let isDarkMode = false;
+  const itemsPerPage = 9;
 
-  function onSubmit(event) {
-    const name = event.target.name.value;
-    backend.greet(name).then((response) => {
-      greeting = response;
-    });
-    return false;
+  $: visibleCollections = filteredCollections.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  $: totalPages = Math.ceil(filteredCollections.length / itemsPerPage);
+
+  onMount(async () => {
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      collectionsData = collections.collections;
+      filteredCollections = collectionsData;
+    } catch (err) {
+      error = err.message || "Failed to load collections";
+    } finally {
+      isLoading = false;
+    }
+  });
+
+  function handleSearch() {
+    filteredCollections = collectionsData.filter(collection =>
+      collection.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      collection.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      collection.type.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    currentPage = 1;
+  }
+
+  function toggleDarkMode() {
+    isDarkMode = !isDarkMode;
+    document.documentElement.classList.toggle('dark', isDarkMode);
   }
 </script>
 
+<style lang="scss">
+  /* Import the global styles from the script section */
+  :global {
+
+    :root {
+      --primary-color: #ffffff;
+      --background-color: #000000;
+      --text-color: #ffffff;
+      --card-bg: #111111;
+      --accent-color: #444444;
+      --button-color: #333333;
+      --button-hover: #555555;
+    }
+
+    body {
+      font-family: 'IBM Plex Mono', monospace;
+      background-color: var(--background-color);
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+    }
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-title {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .logo-title h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--primary-color);
+  }
+
+  .logo-title h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0.25rem 0 0 0;
+  }
+
+  .theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-left: 1rem;
+  }
+
+  .search-bar {
+    flex: 1;
+    max-width: 400px;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+  }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .collection-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+
+  .collection-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .collection-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .collection-card-content {
+    padding: 1rem;
+  }
+
+  .collection-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .collection-card p {
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.8;
+  }
+
+  .metadata {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    opacity: 0.7;
+  }
+
+  .collection-card a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--button-color);
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    border: 1px solid var(--accent-color);
+    transition: background-color 0.2s, transform 0.2s;
+  }
+
+  .collection-card a:hover {
+    background-color: var(--button-hover);
+    transform: translateY(-2px);
+  }
+
+  .skeleton {
+    background: #e2e8f0;
+    border-radius: 8px;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem;
+  }
+
+  .pagination button {
+    background: var(--button-color);
+    color: var(--text-color);
+    border: 1px solid var(--accent-color);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+  }
+
+  .pagination button:hover:not(:disabled) {
+    background-color: var(--button-hover);
+    transform: translateY(-2px);
+  }
+
+  .pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .empty-state h2 {
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  .empty-state p {
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    opacity: 0.8;
+  }
+
+  .empty-state button {
+    background: var(--button-color);
+    color: var(--text-color);
+    border: 1px solid var(--accent-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+  }
+
+  .empty-state button:hover {
+    background-color: var(--button-hover);
+    transform: translateY(-2px);
+  }
+
+  .footer {
+    padding: 2rem;
+    background-color: var(--card-bg);
+    margin-top: 4rem;
+    text-align: center;
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .social-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .social-links a:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+
+  .social-icon {
+    width: 24px;
+    height: 24px;
+    stroke: var(--text-color);
+    transition: stroke 0.2s;
+  }
+
+  .social-links a:hover .social-icon {
+    stroke: var(--primary-color);
+  }
+
+  @media (max-width: 768px) {
+    .portfolio-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .portfolio-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-bar {
+      width: 100%;
+    }
+  }
+</style>
+
 <main>
-  <img src="/logo2.svg" alt="DFINITY logo" />
-  <br />
-  <br />
-  <form action="#" on:submit|preventDefault={onSubmit}>
-    <label for="name">Enter your name: &nbsp;</label>
-    <input id="name" alt="Name" type="text" />
-    <button type="submit">Click Me!</button>
-  </form>
-  <section id="greeting">{greeting}</section>
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-title">
+        <h1>AIMSOMNIA</h1>
+        <h2>Collections</h2>
+      </div>
+    </div>
+    <div class="header-right">
+      <input
+        class="search-bar"
+        type="text"
+        placeholder="Search collections..."
+        bind:value={searchQuery}
+        on:input={handleSearch}
+      />
+    </div>
+  </div>
+
+  {#if isLoading}
+    <div class="portfolio-grid">
+      {#each Array(6) as _}
+        <div class="collection-card skeleton" style="height: 200px"></div>
+      {/each}
+    </div>
+  {:else if error}
+    <div class="empty-state">
+      <EmptyStateIllustration />
+      <h2>Something went wrong</h2>
+      <p>{error}</p>
+      <button on:click={() => window.location.reload()}>Try Again</button>
+    </div>
+  {:else if filteredCollections.length === 0}
+    <div class="empty-state">
+      <EmptyStateIllustration />
+      <h2>No collections found</h2>
+      <p>Try adjusting your search or check back later.</p>
+    </div>
+  {:else}
+    <div class="portfolio-grid">
+      {#each visibleCollections as collection}
+        <div class="collection-card">
+          <img src={collection.image} alt={collection.name} />
+          <div class="collection-card-content">
+            <h3>{collection.name}</h3>
+            <p>{collection.description}</p>
+            <div class="metadata">
+              <span>Type: {collection.type}</span>
+              <span>Year: {collection.year}</span>
+              <span>Items: {collection.count}</span>
+            </div>
+            <a href={collection.externalUrl} target="_blank" rel="noopener noreferrer">
+              View Collection
+            </a>
+          </div>
+        </div>
+      {/each}
+    </div>
+
+    {#if totalPages > 1}
+      <div class="pagination">
+        <button
+          on:click={() => currentPage--}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span>Page {currentPage} of {totalPages}</span>
+        <button
+          on:click={() => currentPage++}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
+    {/if}
+  {/if}
 </main>
+
+<footer class="footer">
+  <div class="social-links">
+    <a href="https://twitter.com/aimsomnia" target="_blank" rel="noopener noreferrer">
+      <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+      </svg>
+    </a>
+    <a href="https://instagram.com/aimsomnia" target="_blank" rel="noopener noreferrer">
+      <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+      </svg>
+    </a>
+    <a href="https://linkedin.com/company/aimsomnia" target="_blank" rel="noopener noreferrer">
+      <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+        <rect x="2" y="9" width="4" height="12"></rect>
+        <circle cx="4" cy="4" r="2"></circle>
+      </svg>
+    </a>
+    <a href="https://github.com/aimsomnia" target="_blank" rel="noopener noreferrer">
+      <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+      </svg>
+    </a>
+  </div>
+  <p>&copy; {new Date().getFullYear()} AIMSOMNIA. All rights reserved.</p>
+</footer>
