@@ -15,10 +15,24 @@ const config = {
     adapter: adapter({
       pages: 'dist',
       assets: 'dist',
-      fallback: undefined,
+      fallback: 'index.html',
       precompress: false,
       strict: true,
     }),
+    paths: {
+      base: '',
+      relative: false
+    },
+    prerender: {
+      handleHttpError: ({ path, referrer, message }) => {
+        // Ignore missing assets during build
+        if (path.endsWith('.jpg') || path.endsWith('.png') || path.endsWith('.ico')) {
+          console.warn(`Warning: Asset not found: ${path}`);
+          return;
+        }
+        throw new Error(message);
+      }
+    }
   },
 };
 

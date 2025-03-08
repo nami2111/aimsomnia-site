@@ -5,14 +5,16 @@
   },
   "name": "aimsomnia-site",
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
-    "prebuild": "npm run prebuild --workspaces --if-present",
-    "pretest": "npm run prebuild --workspaces --if-present",
-    "start": "npm start --workspaces --if-present",
-    "test": "npm test --workspaces --if-present"
+    "build": "npm run build --workspace=src/aimsomnia-site-frontend",
+    "start": "npm start --workspace=src/aimsomnia-site-frontend",
+    "deploy": "npm run build && juno deploy",
+    "deploy:prod": "npm run build && juno deploy --network ic"
   },
   "type": "module",
   "workspaces": [
     "src/aimsomnia-site-frontend"
-  ]
+  ],
+  "devDependencies": {
+    "@junobuild/config": "^0.1.2"
+  }
 }

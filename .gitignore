@@ -1,25 +1,78 @@
-# Various IDEs and Editors
-.vscode/
-.idea/
-**/*~
+# Build directories
+dist/
+build/
+.svelte-kit/
+.output/
 
-# Mac OSX temporary files
-.DS_Store
-**/.DS_Store
+# Dependencies
+node_modules/
+.pnpm-store/
 
-# dfx temporary files
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# ICP & Juno specific
 .dfx/
-
-# generated files
+.juno/
+canister_ids.json
 **/declarations/
 
-# rust
-target/
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
-# frontend code
-node_modules/
-dist/
-.svelte-kit/
+# IDE - IntelliJ/WebStorm
+.idea/
+*.iml
+*.iws
+*.ipr
 
-# environment variables
+# IDE - Visual Studio
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# System Files
+.DS_Store
+Thumbs.db
+*.pem
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# TypeScript
+*.tsbuildinfo
+
+# Svelte
+.DS_Store
+/package
 .env
+.env.*
+!.env.example
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Optional: Deployment specific
+.vercel
+.netlify

@@ -1,0 +1,12 @@
+{
+  "satellite": {
+    "name": "aimsomnia-site",
+    "description": "Aimsomnia NFT Collection Showcase",
+    "frontend": {
+      "build": {
+        "cmd": "npm run build",
+        "dist": "src/aimsomnia-site-frontend/dist"
+      }
+    }
+  }
+} 
