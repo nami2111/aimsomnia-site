@@ -22,10 +22,11 @@
 
   onMount(async () => {
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
       collectionsData = collections.collections;
       filteredCollections = collectionsData;
+      console.log('Collections loaded:', collectionsData);
     } catch (err) {
+      console.error('Error loading collections:', err);
       error = err.message || "Failed to load collections";
     } finally {
       isLoading = false;
@@ -139,45 +140,67 @@
   }
 
   .collection-card {
-    background-color: var(--card-bg);
-    border-radius: 8px;
+    background: #000000;
+    display: flex;
+    flex-direction: column;
+    height: 450px;
+    width: 100%;
     overflow: hidden;
-    transition: transform 0.2s;
-  }
-
-  .collection-card:hover {
-    transform: translateY(-4px);
   }
 
   .collection-card img {
     width: 100%;
-    height: 200px;
+    height: 180px;
     object-fit: cover;
+    object-position: center;
+    aspect-ratio: 16 / 9;
   }
 
-  .collection-card-content {
-    padding: 1rem;
+  .card-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
 
-  .collection-card h3 {
-    margin: 0 0 0.5rem;
-    font-size: 1.25rem;
+  .collection-name {
+    font-size: 14px;
+    color: #ffffff;
+    margin: 0 0 8px 0;
+    font-weight: normal;
   }
 
-  .collection-card p {
-    margin: 0 0 1rem;
-    font-size: 0.9rem;
-    color: var(--text-color);
-    opacity: 0.8;
+  .description-container {
+    height: 120px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    border: none;
+    padding: 0;
+    
+    &::-webkit-scrollbar {
+      width: 2px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #333333;
+    }
+  }
+
+  .collection-description {
+    font-size: 12px;
+    color: #666666;
+    margin: 0;
+    line-height: 1.5;
   }
 
   .metadata {
-    display: flex;
-    gap: 1rem;
-    font-size: 0.8rem;
-    margin-bottom: 1rem;
-    color: var(--text-color);
-    opacity: 0.7;
+    margin-bottom: 16px;
+    font-size: 12px;
+    color: #666666;
   }
 
   .collection-card a {
@@ -370,16 +393,17 @@
       {#each visibleCollections as collection}
         <div class="collection-card">
           <img src={collection.image} alt={collection.name} />
-          <div class="collection-card-content">
-            <h3>{collection.name}</h3>
-            <p>{collection.description}</p>
+          <div class="card-content">
+            <h3 class="collection-name">{collection.name}</h3>
+            <div class="description-container">
+              <p class="collection-description">{collection.description}</p>
+            </div>
             <div class="metadata">
               <span>Type: {collection.type}</span>
-              <span>Year: {collection.year}</span>
               <span>Items: {collection.count}</span>
             </div>
-            <a href={collection.externalUrl} target="_blank" rel="noopener noreferrer">
-              View Collection
+            <a href={collection.externalUrl} class="view-collection" target="_blank" rel="noopener noreferrer">
+              VIEW COLLECTION
             </a>
           </div>
         </div>

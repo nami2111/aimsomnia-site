@@ -5,7 +5,9 @@
   },
   "name": "aimsomnia-site",
   "scripts": {
+    "dev": "npm run dev --workspace=src/aimsomnia-site-frontend",
     "build": "npm run build --workspace=src/aimsomnia-site-frontend",
+    "preview": "npm run preview --workspace=src/aimsomnia-site-frontend",
     "start": "npm start --workspace=src/aimsomnia-site-frontend",
     "deploy": "npm run build && juno deploy",
     "deploy:prod": "npm run build && juno deploy --network ic"
