@@ -76,3 +76,14 @@ vite.config.ts.timestamp-*
 # Optional: Deployment specific
 .vercel
 .netlify
+
+# Juno specific
+.vessel/
+.mops/
+
+# Testing
+playwright-report/
+test-results/
+
+# Local development
+.local/

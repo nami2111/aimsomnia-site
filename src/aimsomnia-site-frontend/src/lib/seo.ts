@@ -10,7 +10,7 @@ export const seoConfig = {
     defaultImage: '/og-image.jpg',
     
     // Social media handles
-    twitter: '@yourtwitterhandle', // Replace with your Twitter handle
+    twitter: '@aimsomnia', // Replace with your Twitter handle
     
     // Collection info
     collectionSize: '10000', // Replace with your collection size

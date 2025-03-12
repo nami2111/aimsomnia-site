@@ -1,0 +1,20 @@
+:root {
+  --primary-color: #ffffff;
+  --background-color: #000000;
+  --text-color: #ffffff;
+  --card-bg: #111111;
+  --accent-color: #444444;
+  --button-color: #333333;
+  --button-hover: #555555;
+}
+
+body {
+  font-family: 'IBM Plex Mono', monospace;
+  background-color: var(--background-color);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+} 

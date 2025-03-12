@@ -18,5 +18,8 @@
   ],
   "devDependencies": {
     "@junobuild/config": "^0.1.2"
+  },
+  "dependencies": {
+    "@junobuild/analytics": "^0.1.5"
   }
 }

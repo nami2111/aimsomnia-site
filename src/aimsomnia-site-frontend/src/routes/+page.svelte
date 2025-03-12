@@ -1,8 +1,8 @@
-<script>
-  import "../index.scss";
+<script lang="ts">
   import { onMount } from "svelte";
   import collections from "../lib/collections.json";
   import EmptyStateIllustration from "../lib/Logo.svelte";
+  import { analyticsService } from '$lib/services/analytics.service';
 
   let isLoading = true;
   let error = null;
@@ -46,34 +46,25 @@
     isDarkMode = !isDarkMode;
     document.documentElement.classList.toggle('dark', isDarkMode);
   }
+
+  const handleCollectionClick = async (collection) => {
+    await handleCollectionView(collection);
+    if (collection.externalUrl) {
+      await handleExternalLink(collection.externalUrl);
+      window.open(collection.externalUrl, '_blank');
+    }
+  };
+
+  async function handleCollectionView(collection: { name: string }) {
+    await analyticsService.trackCollectionView(collection.name);
+  }
+
+  async function handleExternalLink(url: string) {
+    await analyticsService.trackExternalLink(url);
+  }
 </script>
 
 <style lang="scss">
-  /* Import the global styles from the script section */
-  :global {
-
-    :root {
-      --primary-color: #ffffff;
-      --background-color: #000000;
-      --text-color: #ffffff;
-      --card-bg: #111111;
-      --accent-color: #444444;
-      --button-color: #333333;
-      --button-hover: #555555;
-    }
-
-    body {
-      font-family: 'IBM Plex Mono', monospace;
-      background-color: var(--background-color);
-      background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-      background-size: 50px 50px;
-      color: var(--text-color);
-      transition: background-color 0.3s, color 0.3s;
-    }
-  }
-
   .header {
     display: flex;
     justify-content: space-between;
@@ -391,7 +382,7 @@
   {:else}
     <div class="portfolio-grid">
       {#each visibleCollections as collection}
-        <div class="collection-card">
+        <div class="collection-card" on:click={() => handleCollectionClick(collection)} role="button" tabindex="0" on:keydown={(e) => e.key === 'Enter' && handleCollectionClick(collection)}>
           <img src={collection.image} alt={collection.name} />
           <div class="card-content">
             <h3 class="collection-name">{collection.name}</h3>
